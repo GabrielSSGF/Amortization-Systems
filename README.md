@@ -5,7 +5,8 @@ O projeto foi desenvolvido com o objetivo de automatizar os cálculos que são n
 
 # **Descrição do projeto**
 O projeto inicialmente se consististiu no desenvolvimento da classe **'Amortização'**, no qual realiza o cálculo de um empréstimo, financiamento ou dívida a partir de um dos sistemas de amortizações existentes. Ao passar como entrada as informações de valor total a ser pago, a quantidade de parcelas e o valor do juros, o usuário poderá escolher o tipo de sistema de amortização que será utilizado para o pagamento e o código realizará os cálculos necessários, exibindo os valores das prestações, das amortizações e dos juros de cada período, exibindo saldo atual após o pagamento ser realizado, ou seja, o valor que ainda falta ser pago. Na imagem abaixo, é possível visualizar um exemplo de saída apresentada pelo programa.
-Em busca de desenvolver habilidades relacionadas a arrays bidimensionais, listas e dicionários, o projeto foi portado para Python. O arquivo se encontra em Python Edition > Amortizacao.py
+
+Em busca de desenvolver habilidades relacionadas a arrays bidimensionais, listas e dicionários, este projeto foi portado para Python. O arquivo se encontra em PythonEdition > Amortizacao.py. Futuramente este README será expandido para comportar as diferenças entre a versão em Java e em Python.
 
 <a href="https://imgur.com/zIj4Egq"><img src="https://i.imgur.com/zIj4Egq.png" title="source: imgur.com" align="middle"/></a>
 
