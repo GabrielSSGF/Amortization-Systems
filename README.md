@@ -58,9 +58,9 @@ Onde:
 - Visual Studio Code.
 
 # **Como utilizar**
-**Pré-requisitos: 
+**Pré-requisitos:**
 - Java 18 (ou superior) instalado;
-- Python 3.10 (ou superior) instalado.**  
+- Python 3.10 (ou superior) instalado.
 
 ```bash
 # clonar repositorio:
@@ -70,7 +70,7 @@ git clone https://github.com/GabrielSSGF/SistemaDeAmortizacao.git
 # (Obs.: O comando a seguir é feito a partir de onde a pasta foi salva)
 cd SistemaDeAmortizacao/src/principal
 
-**ou**
+# ou
 
 cd SistemaDeAmortizacao/PythonEdition/
 
