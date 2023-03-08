@@ -4,11 +4,13 @@
 O projeto foi desenvolvido com o objetivo de automatizar os cálculos que são necessários realizar ao adotar um sistema de amortização para pagar uma dívida e/ou empréstimo por prestações.
 
 # **Descrição do projeto**
-O projeto consiste no desenvolvimento da classe **'Amortização'**, no qual realiza o cálculo de um empréstimo, financiamento ou dívida a partir de um dos sistemas de amortizações existentes. Ao passar como entrada as informações de valor total a ser pago, a quantidade de parcelas e o valor do juros, o usuário poderá escolher o tipo de sistema de amortização que será utilizado para o pagamento e o código realizará os cálculos necessários, exibindo os valores das prestações, das amortizações e dos juros de cada período, exibindo saldo atual após o pagamento ser realizado, ou seja, o valor que ainda falta ser pago. Na imagem abaixo, é possível visualizar um exemplo de saída apresentada pelo programa.
+O projeto inicialmente se consististiu no desenvolvimento da classe **'Amortização'**, no qual realiza o cálculo de um empréstimo, financiamento ou dívida a partir de um dos sistemas de amortizações existentes. Ao passar como entrada as informações de valor total a ser pago, a quantidade de parcelas e o valor do juros, o usuário poderá escolher o tipo de sistema de amortização que será utilizado para o pagamento e o código realizará os cálculos necessários, exibindo os valores das prestações, das amortizações e dos juros de cada período, exibindo saldo atual após o pagamento ser realizado, ou seja, o valor que ainda falta ser pago. Na imagem abaixo, é possível visualizar um exemplo de saída apresentada pelo programa.
+
+Em busca de desenvolver habilidades relacionadas a arrays bidimensionais, listas e dicionários, este projeto foi portado para Python. O arquivo se encontra em PythonEdition > Amortizacao.py. Futuramente este README será expandido para comportar as diferenças entre a versão em Java e em Python.
 
 <a href="https://imgur.com/zIj4Egq"><img src="https://i.imgur.com/zIj4Egq.png" title="source: imgur.com" align="middle"/></a>
 
-A seguir, serão apresentados os tipos de sistemas de amortizações presentes na classe.
+A seguir, serão apresentados os tipos de sistemas de amortizações presentes no projeto.
 
 ## **Sistema de Amortização Americano**
 Nesse sistema, a devolução do principal é feita de uma só vez no final do período de amortização. Não são previstas amortizações intermediárias durante a vigência dos pagamentos, sendo os juros pagos periodicamente. Devido ao impacto financeiro que o próprio sistema concebe visando o pagamento único da dívida, faz se necessária a constituição de um fundo de amortização, o qual irá financiar tal quantia. O fundo é constituído concomitantemente aos pagamentos de juros do principal através do uso do fator de acumulação de capital por operação múltipla.
@@ -52,11 +54,14 @@ Onde:
 
 # **Tecnologias utilizadas**
 - Java;  
-- Eclipse IDE;  
+- Eclipse IDE;
+- Python;
 - Visual Studio Code.
 
 # **Como utilizar**
-**Pré-requisitos: Java 18 (ou superior) instalado.**  
+**Pré-requisitos:**
+- Java 18 (ou superior) instalado;
+- Python 3.10 (ou superior) instalado.
 
 ```bash
 # clonar repositorio:
@@ -66,11 +71,18 @@ git clone https://github.com/GabrielSSGF/SistemaDeAmortizacao.git
 # (Obs.: O comando a seguir é feito a partir de onde a pasta foi salva)
 cd SistemaDeAmortizacao/src/principal
 
+# ou
+
+cd SistemaDeAmortizacao/PythonEdition/
+
 # Compilar a main através do seguinte comando:
 javac -cp .. Main.java
 
 # Após compilar, basta executar o programa:
 java -cp .. Main.java
+
+# Ou executar o script através do comando:
+python (ou python3) Amortizacao.py
 
 ```
 # Autores
