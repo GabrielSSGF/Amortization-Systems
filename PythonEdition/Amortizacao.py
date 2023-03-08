@@ -266,7 +266,3 @@ while True:
             os.system('cls')
             os.system('cls')
             break
-<<<<<<< HEAD:Python Variation/Amortizacao.py
-        
-=======
->>>>>>> 1602ba123815440e6d780e44b1e26e01e078c346:PythonEdition/Amortizacao.py
