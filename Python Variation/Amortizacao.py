@@ -64,7 +64,7 @@ while True:
                 exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[0][4])
             else:
                 print("Período: ", i, "\tSaldo atual:\t- \t\tAmortização: R$%.2f" % round(tabela[i][2],2), "\t\tJuros: R$%.2f" % round(tabela[i][3],2), "\t\tPrestação: R$%.2f" % round(tabela[0][4],2))
-        print("TOTALIZAÇÕES - \tAmortização: R$%.2f" % round(tam,2), "\tJuros: R$%.2f" % round(tj,2), "\tPrestacao: R$%.2f" % round(tp, 2))
+        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
 
     # Método S.A.A
     
@@ -91,7 +91,7 @@ while True:
                 exibe_tab(i, tabela[0][1], tabela[1][2], tabela[1][3], tabela[1][4])
             else:
                 print("Período: ", i, "Saldo atual: -  Amortização: R$%.2f" % round(tabela[i][2],2), "  Juros: R$%.2f" % round(tabela[1][3],2), "  Prestação: R$%.2f" % round(tabela[i][4],2))
-        print("TOTALIZAÇÕES - \tAmortização: R$%.2f" % round(tam,2), "\tJuros: R$%.2f" % round(tjpf,2), "\tPrestacao: R$%.2f" % round(tp, 2))
+        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
         
         print("\nFUNDO DE AMORTIZAÇÃO\n")
         
@@ -128,7 +128,7 @@ while True:
                 exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[i][4])
             else:
                 print("Período: ", i, "\tSaldo atual:\t- \t\tAmortização: R$%.2f" % round(tabela[i][2],2), "\tJuros: R$%.2f" % round(tabela[i][3],2), "\tPrestação: R$%.2f" % round(tabela[i][4],2))
-        print("TOTALIZAÇÕES - \tAmortização: R$%.2f" % round(tam,2), "\tJuros: R$%.2f" % round(tj,2), "\tPrestacao: R$%.2f" % round(tp, 2))
+        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
 
     # Método S.A.Alemão - Sistema de Amortização Alemão
     
@@ -159,7 +159,7 @@ while True:
                 exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[1][4])
             else:
                 print("Período: ", i, " \tSaldo atual:\t- \tAmortização: R$%.2f" % round(tabela[i][2],2), "\tJuros:\t- Prestação: R$%.2f" % round(tabela[1][4],2))
-        print("TOTALIZAÇÕES -\tAmortização: R$%.2f" % round(tam,2), "\tJuros: R$%.2f" % round(tj,2), "\tPrestacao: R$%.2f" % round(tp, 2))
+        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
 
     # Declaração de variáveis
 
@@ -259,6 +259,10 @@ while True:
                     "\n<N> - Simular novamente\n").upper()
     while reiniciar=="S" or reiniciar=="N":
         if reiniciar=="S":
+            os.system('cls')
+            os.system('cls')
+            os.system('cls')
+            os.system('cls')
             exit()
         elif reiniciar=="N":
             os.system('cls')
@@ -266,7 +270,3 @@ while True:
             os.system('cls')
             os.system('cls')
             break
-<<<<<<< HEAD:Python Variation/Amortizacao.py
-        
-=======
->>>>>>> 1602ba123815440e6d780e44b1e26e01e078c346:PythonEdition/Amortizacao.py
