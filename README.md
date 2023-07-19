@@ -1,91 +1,108 @@
-# Sistemas de Amortização
+<h1 align="center">
+  <br>
+  <a><img src="https://www.dinkytown.net/images/loans.png" alt="Jira" width="200"></a>
+  <br>
+  Amortization Systems
+  <br>
+</h1>
 
-# Sobre o Projeto
-O projeto foi desenvolvido com o objetivo de automatizar os cálculos que são necessários realizar ao adotar um sistema de amortização para pagar uma dívida e/ou empréstimo por prestações.
+<h4 align="center">A desktop app to plan your <a href="https://www.investopedia.com/terms/a/amortized_loan.asp#:~:text=An%20amortized%20loan%20is%20a%20type%20of%20loan%20that%20requires,towards%20reducing%20the%20principal%20amount." target="_blank">financing</a>.</h4>
 
-# **Descrição do projeto**
-O projeto inicialmente se consististiu no desenvolvimento da classe **'Amortização'**, no qual realiza o cálculo de um empréstimo, financiamento ou dívida a partir de um dos sistemas de amortizações existentes. Ao passar como entrada as informações de valor total a ser pago, a quantidade de parcelas e o valor do juros, o usuário poderá escolher o tipo de sistema de amortização que será utilizado para o pagamento e o código realizará os cálculos necessários, exibindo os valores das prestações, das amortizações e dos juros de cada período, exibindo saldo atual após o pagamento ser realizado, ou seja, o valor que ainda falta ser pago. Na imagem abaixo, é possível visualizar um exemplo de saída apresentada pelo programa.
+<p align="center">
+  <a href="#key-features">Key Features</a> •
+  <a href="#systems-explanation">Systems Explanation</a> •
+  <a href="#planned-features">Planned Features</a> •
+  <a href="#technologies-used">Technologies used</a> •
+  <a href="#how-to-use">How To Use</a> •
+  <a href="#credits">Credits</a>
+</p>
 
-Em busca de desenvolver habilidades relacionadas a arrays bidimensionais, listas e dicionários, este projeto foi portado para Python. O arquivo se encontra em PythonEdition > Amortizacao.py. Futuramente este README será expandido para comportar as diferenças entre a versão em Java e em Python.
+## ▶️ Project Status: Ongoing. . .
 
-<a href="https://imgur.com/zIj4Egq"><img src="https://i.imgur.com/zIj4Egq.png" title="source: imgur.com" align="middle"/></a>
+## ⚙️ Key Features
+The project was developed with the objective of automating the calculations that are necessary when adopting an amortization system to pay a debt and/or loan by installments.
 
-A seguir, serão apresentados os tipos de sistemas de amortizações presentes no projeto.
+## 🧾 Systems Explanation
+<details>
+  <summary>📚 Content</summary>
+  <p>
 
-## **Sistema de Amortização Americano**
-Nesse sistema, a devolução do principal é feita de uma só vez no final do período de amortização. Não são previstas amortizações intermediárias durante a vigência dos pagamentos, sendo os juros pagos periodicamente. Devido ao impacto financeiro que o próprio sistema concebe visando o pagamento único da dívida, faz se necessária a constituição de um fundo de amortização, o qual irá financiar tal quantia. O fundo é constituído concomitantemente aos pagamentos de juros do principal através do uso do fator de acumulação de capital por operação múltipla.
-  
-  
+### Terminology
+---
+- Amortization: It is the payment made in installments and within a pre-established period;
+- Principal: Total amount of the debt, that is, the actual amount that was borrowed or financed;
+- Current balance: When executing the program, the current balance is the amount still to be paid;
+- Installment: It is the value of the installment that was paid in the informed period
 
-## **Sistema de Amortização Francês**
-Também conhecido como Tabela *Price*, o Sistema de Amortização Francês Sistema de Amortização Francês é um dos modelos mais conhecidos e adotados atualmente. Através dele, o pagamento é feito através de um conjunto de prestações sucessivas e constantes, geralmente com parcelas pagas mensalmente em valores iguais, já com juros embutidos. O cálculo é feito da seguinte maneira:
+### French Amortization System
+---
+Also known as the *Price* Table, the French Amortization System is one of the most well-known and currently adopted models. Through it, payment is made through a set of successive and constant installments, usually with installments paid monthly in equal amounts, already with built-in interest. The calculation is done as follows:
 
-![](https://www.maxieduca.com.br/blog/wp-content/uploads/2018/03/resposta-da-quest%C3%A3o-02.jpg "Fórmula utilizada no Sistema de Amortização Francês")
+![](https://www.maxieduca.com.br/blog/wp-content/uploads/2018/03/resposta-da-quest%C3%A3o-02.jpg "Formula used in the French Amortization System")
 
-
-## **Sistema de Amortização Alemão**
-O Sistema Alemão consiste em liquidar uma dívida onde os juros são pagos antecipadamente com prestações iguais, exceto o primeiro pagamento que corresponde aos juros cobrados no momento da operação financeira.
-Nesse sistema, a última amortização deve coincidir com o pagamento, uma vez que todos os juros são cobrados antecipadamente nas prestações anteriores, assim como todos os pagamentos, com exceção do primeiro, devem ser iguais. 
-
-## **Sistema de Amortização Misto**
-O Sistema Misto é um sistema de amortização  que apresenta características intermediárias entre os outros dois principais sistemas de amortização, o Sistema de Amortização Constante (SAC) e o Sistema de Amortização Francês (SAF).
-Logo, no sistema de amortização misto, o tomador do empréstimo irá pagar uma parcela que é a média entre o SAC e o Sistema Price. Para realizar esse cálculo, é necessário somar a parcela do SAC e do Sistema Price e dividir por dois. Portanto, pode-se dizer que as parcelas do SAM possuem uma lógica intermediária entre os dois sistemas.
-
-## **Sistema de Amortização Constante**
-Consiste no pagamento constante da dívida com base em pagamentos periódicos decrescentes. Ou seja, quanto mais o tempo passa, menores ficam as parcelas de quitação do saldo devedor enquanto o valor é amortizado de maneira constante em todos os períodos.
-De forma geral, os juros e o capital são calculados uma única vez e divididos para o pagamento em várias parcelas durante o prazo de quitação. O valor da amortização é calculado através da divisão entre o capital inicial e o número de prestações a serem pagas. O cálculo é feito da seguinte maneira: 
+### Constant Amortization System
+---
+It consists of the constant payment of the debt based on periodic decreasing payments. That is, the more time passes, the smaller the installments of the outstanding balance are, while the amount is amortized in a constant manner in all periods.
+In general, interest and capital are calculated only once and divided for payment in several installments during the settlement period. The amortization amount is calculated by dividing the initial capital by the number of installments to be paid. The calculation is done as follows:
  
-**A = P / n**  
-Onde:  
-- A = Amortização;  
-- P = Principal;  
-- n = Número de prestações.  
+**A = P / n**
 
-### **Dicionário**
+Where:
+- A = Amortization;
+- P = Main;
+- n = Number of installments. 
 
-- Amortização: É o pagamento feito de forma parcelada e em um prazo pré-estabelecido;  
-- Principal: Valor total da dívida, ou seja, o montante real que foi emprestado ou financiado;  
-- Saldo atual: Na execução do programa, o saldo atual se trata do valor que ainda deverá ser pago;
-- Prestação: É o valor da parcela que foi pago no período informado.   
+### Mixed Amortization System
+---
+The Mixed System is an amortization system that presents intermediate characteristics between the other two main amortization systems, the Constant Amortization System (SAC) and the French Amortization System (SAF).
+Therefore, in the mixed amortization system, the borrower will pay a portion that is the average between the SAC and the Price System. To perform this calculation, it is necessary to add the portion of the SAC and the Price System and divide it by two. Therefore, it can be said that the SAM plots have an intermediate logic between the two systems.
 
-# **Status do Projeto**  
-✅Finalizado
+### American Amortization System
+---
+In this system, the return of principal is made in one lump sum at the end of the amortization period. Interim amortizations are not foreseen during the term of the payments, and interest is paid periodically. Due to the financial impact that the system itself conceives, aiming at the one-time payment of the debt, it is necessary to set up a amortization fund, which will finance this amount. The fund is set up concurrently with interest payments on the principal through the use of the multi-operation capital accumulation factor.
+
+### German Amortization System
+---
+The German System consists of settling a debt where interest is paid in advance in equal installments, except for the first payment which corresponds to the interest charged at the time of the financial transaction.
+In this system, the last amortization must coincide with the payment, since all interest is charged in advance on previous installments, as well as all payments, with the exception of the first, must be equal.
+
+  </p>
+</details>
+
+For those curious behind the logic used for the implementation of these systems.
 
 
-# **Tecnologias utilizadas**
-- Java;  
-- Eclipse IDE;
+## 🎯 Planned Features
+
+- Complete interface for the desktop app;
+- Storing multiple simulations by date;
+- Option to export the grouped simulations in a Excel file.
+
+## 🧰 Technologies used
 - Python;
+- Rust;
+- Tauri;
+- TypeScript;
 - Visual Studio Code.
 
-# **Como utilizar**
-**Pré-requisitos:**
-- Java 18 (ou superior) instalado;
+## 📑 How To Use
+**Prerequisites:**
+- Rust;
+- Tauri;
 - Python 3.10 (ou superior) instalado.
 
 ```bash
-# clonar repositorio:
+# Clone this repository
 git clone https://github.com/GabrielSSGF/SistemaDeAmortizacao.git
 
-# entrar na pasta do projeto com o Prompt de Comando 
-# (Obs.: O comando a seguir é feito a partir de onde a pasta foi salva)
-cd SistemaDeAmortizacao/src/principal
+# Go into the repository
+cd SistemaDeAmortizacao/
 
-# ou
-
-cd SistemaDeAmortizacao/PythonEdition/
-
-# Compilar a main através do seguinte comando:
-javac -cp .. Main.java
-
-# Após compilar, basta executar o programa:
-java -cp .. Main.java
-
-# Ou executar o script através do comando:
-python (ou python3) Amortizacao.py
+# Run the app
+python (or python3) Amortizacao.py
 
 ```
-# Autores
+## 🖋️ Authors
 
 **Gabriel Soares**  
 LinkedIn: https://www.linkedin.com/in/gabriel-soares-588832199/
