@@ -52,7 +52,6 @@ This formula calculates the value of the fixed monthly installment that will be 
 
 *Note:* that the composition of interest and principal changes in each installment, but the total value of the installment remains constant throughout the entire period. Interest is calculated on the remaining outstanding balance, which gradually decreases with each payment, while the principal amount paid increases, resulting in a gradual reduction of the loan balance until it is fully repaid at the end of the term.
 
-![](https://www.maxieduca.com.br/blog/wp-content/uploads/2018/03/resposta-da-quest%C3%A3o-02.jpg "Formula used in the French Amortization System")
 
 ### Constant Amortization System
 ---
