@@ -38,7 +38,20 @@ The project was developed with the objective of automating the calculations that
 ---
 Also known as the *Price* Table, the French Amortization System is one of the most well-known and currently adopted models. Through it, payment is made through a set of successive and constant installments, usually with installments paid monthly in equal amounts, already with built-in interest. The calculation is done as follows:
 
-![](https://www.maxieduca.com.br/blog/wp-content/uploads/2018/03/resposta-da-quest%C3%A3o-02.jpg "Formula used in the French Amortization System")
+```
+P = (PV * r * (1 + r)^n) / ((1 + r)^n - 1)
+```
+
+Where:
+- P: Installment amount (monthly payment);
+- PV: Loan amount (or present value);
+- r: Monthly interest rate, calculated as the annual rate divided by 12 and expressed in decimal (e.g., if the annual rate is 6%, r will be 0.06/12 = 0.005);
+- n: Total number of periods (or installments) to repay the loan;
+
+This formula calculates the value of the fixed monthly installment that will be paid over the loan term. 
+
+*Note:* that the composition of interest and principal changes in each installment, but the total value of the installment remains constant throughout the entire period. Interest is calculated on the remaining outstanding balance, which gradually decreases with each payment, while the principal amount paid increases, resulting in a gradual reduction of the loan balance until it is fully repaid at the end of the term.
+
 
 ### Constant Amortization System
 ---
@@ -89,7 +102,7 @@ For those curious behind the logic used for the implementation of these systems.
 **Prerequisites:**
 - Rust;
 - Tauri;
-- Python 3.10 (ou superior) instalado.
+- Python 3.10 (or higher) installed.
 
 ```bash
 # Clone this repository
@@ -108,5 +121,5 @@ python (or python3) Amortizacao.py
 LinkedIn: https://www.linkedin.com/in/gabriel-soares-588832199/
 
 **Guilherme Vaiano Nogueira Mendonça**  
-LinkedIn: https://www.linkedin.com/in/guilherme-mendon%C3%A7a-12a83720b/  
+LinkedIn: https://www.linkedin.com/in/guilherme-vaiano/  
 GitHub: https://github.com/GuilhermeVaiano
