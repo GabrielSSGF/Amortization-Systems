@@ -14,7 +14,7 @@
   <a href="#planned-features">Planned Features</a> •
   <a href="#technologies-used">Technologies used</a> •
   <a href="#how-to-use">How To Use</a> •
-  <a href="#credits">Credits</a>
+  <a href="#credits">Authors</a>
 </p>
 
 ## ▶️ Project Status: Ongoing. . .
