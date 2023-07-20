@@ -12,6 +12,28 @@ function App() {
     setGreetMsg(await invoke("greet", { name }));
   }
 
+  async function callRustFunction() {
+    const dados_financiamento = {
+      periodo: 10,
+      saldo: 10000,
+      taxajuros: 0.05
+      // Add other required fields for the SAC function
+    };
+  
+    try {
+      // Call the Rust function with the JavaScript object as an argument
+      const result = await invoke('sac', dados_financiamento);
+      console.log('Result from Rust:', result);
+      // Handle the result from Rust
+    } catch (e) {
+      console.error('Error calling Rust function:', e);
+      // Handle the error
+    }
+  }
+  
+  // Call the Rust function when needed
+  callRustFunction();
+
   return (
     <div className="container">
       <h1>Welcome to Tauri!</h1>
