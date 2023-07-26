@@ -10,31 +10,40 @@ def padrao_de_colunas(worksheet):
     for i in range(len(colunas)):
         worksheet.column_dimensions[colunas[i]].width = 30
 
-def exportacao_xlsx(data_frames, planilhas, path):
+def exportacao_xlsx(data_frames, path): #, planilhas
     writer = pd.ExcelWriter(path, engine='openpyxl')
     for i, df in enumerate(data_frames):
-        df.to_excel(writer, sheet_name=planilhas[i])
+        df.to_excel(writer, sheet_name=f'Sheet_{i}')  # Ou ajuste o nome da planilha conforme suas necessidades
         workbook = writer.book
-        worksheet = workbook[planilhas[i]]
+        worksheet = workbook[f'Sheet_{i}']  # Ou ajuste o nome da planilha conforme suas necessidades
         padrao_de_colunas(worksheet)
-    writer._save()
+    writer.close()
 
 def SAC(dados_financiamento):
     df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
-    df.loc[0] = [dados_financiamento["periodo"], dados_financiamento["saldo"], 0, 0, 0]
-    df.loc[0, 'Amortização'] = df.loc[0, 'Saldo atual'] / df.loc[0, 'Período']
-        
-    for i in range(1, df.loc[0, 'Período'] + 1):
+    df.loc[0] = [0, dados_financiamento["saldo"], "-", "-", "-"]
+    df.loc[0, 'Amortização'] = df.loc[0, 'Saldo atual'] / dados_financiamento["periodo"]
+
+    for i in range(1, dados_financiamento["periodo"] + 1):
+        df.loc[i, 'Período'] = i
         df.loc[i, 'Juros'] = df.loc[i-1, 'Saldo atual'] * dados_financiamento["taxajuros"]
         df.loc[i, 'Prestação'] = df.loc[0, 'Amortização'] + df.loc[i, 'Juros']
         df.loc[i, 'Saldo atual'] = df.loc[i-1, 'Saldo atual'] - df.loc[0, 'Amortização']
-            
+        df.loc[i, 'Amortização'] = df.loc[0, 'Amortização']
+
     tam = df['Amortização'].sum()
     tj = df['Juros'].sum()
     tp = df['Prestação'].sum()
-        
+
     totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
-    df = df.append(totais, ignore_index=True)
+    df_total = pd.DataFrame(totais, index=[df.shape[0]])  # Criar um novo dataframe com os totais
+
+    # Ajustar a coluna "Período" como o índice do dataframe
+    df.set_index('Período', inplace=True)
+    df_total.set_index('Período', inplace=True)  # Definir a coluna "Período" como índice do dataframe de totais
+
+    # Adicionar a linha de totais no final do dataframe
+    df = pd.concat([df, df_total])
 
     return df
 
@@ -181,3 +190,10 @@ def SAALM(dados_financiamento):
     
     return df
 
+"""dados_financiamento = {}
+dados_financiamento["saldo"] = 10000
+dados_financiamento["periodo"] = 5
+dados_financiamento["taxajuros"] = 0.02
+
+df_sac = SAC(dados_financiamento)
+exportacao_xlsx([df_sac], "path")  # Note que agora estamos passando uma lista com o dataframe como argumento"""
