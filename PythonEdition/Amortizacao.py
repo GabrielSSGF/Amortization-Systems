@@ -1,271 +1,191 @@
 import os
+import pandas as pd
+import openpyxl
 
-# tabela[0][0] = periodo        | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tabela[0][1] = saldo atual    | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tabela[0][2] = amortizacao    | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tabela[0][3] = juros          | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tabela[0][4] = prestacao      | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tam = amortização total       | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tj = juros total              | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tp = prestação total          | Planilha financeira (S.A.C, S.A.F, S.A.M, S.ALM e S.A.A)
-# tabelaFA[0][0] = depósito     | Fundo de Amortização (S.A.A)
-# tabelaFA[0][1] = juros        | Fundo de Amortização (S.A.A)
-# tabelaFA[0][2] = montante     | Fundo de Amortização (S.A.A)
-# tm = montante total           | Fundo de Amortização (S.A.A)
-# tjpf = juros total            | Fundo de Amortização (S.A.A)
-# td = depósito total           | Fundo de Amortização (S.A.A)
-
-# Loop infinito do programa
-
-while True:
-
-    # Exibe os valores da planilha financeira
+def padrao_de_colunas(worksheet):
+    colunas = ['B', 'C', 'D', 'E', 'F', 'G']
     
-    def exibe_tab(periodo, saldo, amortizacao, juros, prestacao):
-        print("Período: ", periodo, f"\t{'Saldo atual: R$%.2f' : >20}" % round(saldo,2), f"\t{'Amortização: R$%.2f' : >20}" % round(amortizacao,2), f"{'Juros: R$%.2f' : >20}" % round(juros,2), f"\t{'Prestação: R$%.2f' : >20}" % round(prestacao,2))
-
-    # Exibe valores do fundo de amortização
+    worksheet.column_dimensions['A'].width = 13
     
-    def exibe_tabFA(periodo, deposito, juros, montante):
-        print("Periodo: ", periodo, f"{'Depósito: R$%.2f' : ^20}" % round(deposito,2), f"{'Juros: R$%.2f' : ^20}" % round(juros,2), f"{'Montante: R$%.2f' : ^20}" % round(montante,2))
+    for i in range(len(colunas)):
+        worksheet.column_dimensions[colunas[i]].width = 30
 
-    # Método S.A.C - Sistema de Amortização Constante
-    
-    def SAC():
-        tabela[0][1], tabela[0][0], tam, tj, tp = dados_financiamento["saldo"], dados_financiamento["periodo"], 0, 0, 0
-        print("\nPeríodo:  -",f"{'Saldo atual: R$%.2f' : ^30}" % round(tabela[0][1],2), f"{'Amortização:   -' : ^20}", f"\t{'Juros:   -' : ^25}",  f"{'Prestação:   -' : ^15}")
-        tabela[0][2] = tabela[0][1]/tabela[0][0]
-        for i in range(1, tabela[0][0] + 1):
-            tabela[i][3] = tabela[i-1][1]*dados_financiamento["taxajuros"]
-            tabela[i][4] = tabela[0][2] + tabela[i][3]
-            tabela[i][1] = tabela[i-1][1] - tabela[0][2]
-            tam += tabela[0][2]
-            tj += tabela[i][3]
-            tp += tabela[i][4]
-            if (i!=tabela[0][0]):
-                exibe_tab(i, tabela[i][1], tabela[0][2], tabela[i][3], tabela[i][4])
-            else:
-                print("Período: ", i,f"{'Saldo atual: ' : >20}""-\t", f"\t{'Amortização: R$%.2f' : >20}" % round(tabela[0][2],2), f"{'Juros: R$%.2f' : >20}" % round(tabela[i][3],2), f"\t{'Prestação: R$%.2f' : >20}" % round(tabela[i][4],2))
-        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
+def exportacao_xlsx(data_frames, path): #, planilhas
+    writer = pd.ExcelWriter(path, engine='openpyxl')
+    for i, df in enumerate(data_frames):
+        df.to_excel(writer, sheet_name=f'Sheet_{i}')  # Ou ajuste o nome da planilha conforme suas necessidades
+        workbook = writer.book
+        worksheet = workbook[f'Sheet_{i}']  # Ou ajuste o nome da planilha conforme suas necessidades
+        padrao_de_colunas(worksheet)
+    writer.close()
 
-    # Método S.A.F - Sistema de Amortização Francês - Tabela Price
-    
-    def SAF():
-        tam, tj, tp, saldodevedor, tabela[0][1], tabela[0][0] = 0, 0, 0, 0, dados_financiamento["saldo"], dados_financiamento["periodo"]
-        print("\nPeríodo:  -",f"{'Saldo atual: R$%.2f' : ^30}" % round(tabela[0][1],2), f"{'Amortização:   -' : ^20}", f"\t{'Juros:   -' : ^25}",  f"{'Prestação:   -' : ^15}")
-        coef = (((1+dados_financiamento["taxajuros"])**tabela[0][0])*dados_financiamento["taxajuros"])/(((1+dados_financiamento["taxajuros"])**tabela[0][0])-1)
-        tabela[0][4] = tabela[0][1]*coef
-        for i in range(1, tabela[0][0] + 1):
-            tabela[i][3] = tabela[i-1][1]*dados_financiamento["taxajuros"]
-            tabela[i][2] = tabela[0][4] - tabela[i][3]
-            saldodevedor = tabela[i-1][1] + tabela[i][3]
-            tabela[i][1] = saldodevedor - tabela[0][4]
-            tam += tabela[i][2]
-            tj += tabela[i][3]
-            tp += tabela[0][4]
-            if (i!=tabela[0][0]):
-                exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[0][4])
-            else:
-                print("Período: ", i, f"{'Saldo atual: ' : >20}""-\t", f"\t{'Amortização: R$%.2f' : >15}" % round(tabela[i][2],2), f"\t{'Juros: R$%.2f' : >20}" % round(tabela[i][3],2), f"\t{'Prestação: R$%.2f' : >20}" % round(tabela[0][4],2))
-        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
+def SAC(dados_financiamento):
+    df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
+    df.loc[0] = [0, dados_financiamento["saldo"], "-", "-", "-"]
+    df.loc[0, 'Amortização'] = df.loc[0, 'Saldo atual'] / dados_financiamento["periodo"]
 
-    # Método S.A.A
+    for i in range(1, dados_financiamento["periodo"] + 1):
+        df.loc[i, 'Período'] = i
+        df.loc[i, 'Juros'] = df.loc[i-1, 'Saldo atual'] * dados_financiamento["taxajuros"]
+        df.loc[i, 'Prestação'] = df.loc[0, 'Amortização'] + df.loc[i, 'Juros']
+        df.loc[i, 'Saldo atual'] = df.loc[i-1, 'Saldo atual'] - df.loc[0, 'Amortização']
+        df.loc[i, 'Amortização'] = df.loc[0, 'Amortização']
+
+    tam = df['Amortização'].sum()
+    tj = df['Juros'].sum()
+    tp = df['Prestação'].sum()
+
+    totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
+    df_total = pd.DataFrame(totais, index=[df.shape[0]])  # Criar um novo dataframe com os totais
+
+    # Ajustar a coluna "Período" como o índice do dataframe
+    df.set_index('Período', inplace=True)
+    df_total.set_index('Período', inplace=True)  # Definir a coluna "Período" como índice do dataframe de totais
+
+    # Adicionar a linha de totais no final do dataframe
+    df = pd.concat([df, df_total])
+
+    return df
+
+# Método S.A.F - Sistema de Amortização Francês - Tabela Price
     
-    def SAA():
-        tabela[0][1], tabela[0][0], tam, tjpf, tjfa, tp, tm, td = dados_financiamento["saldo"], dados_financiamento["periodo"], 0, 0, 0, 0, 0, 0
-        tabela[1][3] = tabela[0][1] * dados_financiamento["taxajuros"]
-        tabela[1][4] = tabela[1][3]
-        tabelaFA[1][0] = tabela[0][1] * (dados_financiamento["captacaomedia"]/(((1+dados_financiamento["captacaomedia"])**tabela[0][0]) - 1)) 
-        tabelaFA[1][2] = tabelaFA[1][0]
-            
-        print("\nPLANILHA FINANCEIRA\n")
+def SAF(dados_financiamento):
+    df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
+    tam, tj, tp, saldodevedor, df.loc[0, 'Saldo atual'], df.loc[0, 'Período'] = 0, 0, 0, 0, dados_financiamento["saldo"], dados_financiamento["periodo"]
+    coef = (((1+dados_financiamento["taxajuros"])**df.loc[0, 'Período'])*dados_financiamento["taxajuros"])/(((1+dados_financiamento["taxajuros"])**df.loc[0, 'Período'])-1)
+    df.loc[0, 'Prestação'] = df.loc[0, 'Saldo atual']*coef
+    
+    for i in range(1, df.loc[0, 'Período'] + 1):
+        df.loc[i, 'Juros'] = df.loc[i-1, 'Saldo atual']*dados_financiamento["taxajuros"]
+        df.loc[i, 'Amortização'] = df.loc[0, 'Prestação'] - df.loc[i, 'Juros']
+        saldodevedor = df.loc[i-1, 'Saldo atual'] + df.loc[i, 'Juros']
+        df.loc[i, 'Saldo atual'] = saldodevedor - df.loc[0, 'Prestação']
+        tam += df.loc[i, 'Amortização']
+        tj += df.loc[i, 'Juros']
+        tp += df.loc[0, 'Prestação']
+    
+    totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
+    df = df.append(totais, ignore_index=True)
+    
+    return df
+
+# Método S.A.A
+    
+def SAA(dados_financiamento):
+    saldo = dados_financiamento["saldo"]
+    periodo = dados_financiamento["periodo"]
+
+    df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
+    dfFA = pd.DataFrame(columns=['Período', 'Depósito', 'Juros', 'Montante'])
+
+    df.loc[0, 'Saldo atual'] = saldo
+
+    df.loc[1, 'Juros'] = saldo * dados_financiamento["taxajuros"]
+    df.loc[1, 'Prestação'] = df.loc[1, 'Juros']
+
+    captacao_media = dados_financiamento["captacaomedia"]
+    dfFA.loc[1, 'Depósito'] = saldo * (captacao_media / (((1 + captacao_media) ** periodo) - 1))
+    dfFA.loc[1, 'Montante'] = dfFA.loc[1, 'Depósito']
+
+    tam, tjpf, tp = 0, 0, 0
+
+    for i in range(1, periodo + 1):
+        if i == periodo:
+            df.loc[i, 'Amortização'] = saldo
+            df.loc[i, 'Prestação'] = df.loc[i, 'Amortização'] + df.loc[1, 'Juros']
+            tp += df.loc[i, 'Prestação']
+        else:
+            tp += df.loc[1, 'Prestação']
+
+        tam += df.loc[i, 'Amortização']
+        tjpf += df.loc[1, 'Juros']
+
+    total_df = {
+        'Amortização': round(tam, 2),
+        'Juros': round(tjpf, 2),
+        'Prestação': round(tp, 2)
+    }
+
+    df.loc[periodo + 1, :] = ['Total'] + [total_df[col] for col in ['Amortização', 'Juros', 'Prestação']]
+
+    tjfa, tm, td = 0, 0, 0
+
+    for i in range(1, periodo + 1):
+        if i > 1:
+            dfFA.loc[i, 'Depósito'] = dfFA.loc[i - 1, 'Montante'] * captacao_media
+            dfFA.loc[i, 'Montante'] = dfFA.loc[i - 1, 'Montante'] + dfFA.loc[i, 'Depósito']
+
+        tjfa += dfFA.loc[i, 'Depósito']
+        tm += dfFA.loc[i, 'Montante']
+        td += dfFA.loc[1, 'Depósito']
+
+    total_dfFA = {
+        'Depósito': round(td, 2),
+        'Juros': round(tjfa, 2),
+        'Montante': round(tm, 2)
+    }
+
+    dfFA.loc[periodo + 1, :] = ['Total'] + [total_dfFA[col] for col in ['Depósito', 'Juros', 'Montante']]
+
+    return df, dfFA
+
+# Método S.A.M - Sistema de Amortização Misto
+    
+def SAM(dados_financiamento):
+    df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
+
+    periodo = dados_financiamento["periodo"]
+    saldo = dados_financiamento["saldo"]
+    taxajuros = dados_financiamento["taxajuros"]
+
+    coef = (((1 + taxajuros) ** periodo) * taxajuros) / (((1 + taxajuros) ** periodo) - 1)
+    saldoatualSAC, prestacaoSAF, tam, tj, tp = saldo, saldo * coef, 0, 0, 0
+    amortizacaoSAC = (saldo / periodo)
+
+    for i in range(1, periodo + 1):
+        prestacaoSAC = amortizacaoSAC + (saldoatualSAC * taxajuros)
+
+        df.loc[i, 'Período'] = i
+        df.loc[i, 'Saldo atual'] = saldoatualSAC
+        df.loc[i, 'Amortização'] = prestacaoSAC - (saldoatualSAC * taxajuros)
+        df.loc[i, 'Juros'] = saldoatualSAC * taxajuros
+        df.loc[i, 'Prestação'] = (prestacaoSAC + prestacaoSAF) / 2
+
+        saldoatualSAC -= amortizacaoSAC
+
+        tam += df.loc[i, 'Amortização']
+        tj += df.loc[i, 'Juros']
+        tp += df.loc[i, 'Prestação']
         
-        print("Periodo: -Saldo atual: R$%.2f" % round(tabela[0][1],2), "  Amortizacao: - \tJuros: - \tPrestação: -")
-        for i in range(1, tabela[0][0]+1):
-            if(i==tabela[0][0]):
-                tabela[i][2] = tabela[0][1]
-                tabela[i][4] = tabela[i][2] + tabela[1][3]
-                tp += tabela[i][4]
-            else:
-                tp += tabela[1][4]
-            tam += tabela[i][2]
-            tjpf += tabela[1][3]
-            if (i!=tabela[0][0]):
-                exibe_tab(i, tabela[0][1], tabela[1][2], tabela[1][3], tabela[1][4])
-            else:
-                print("Período: ", i, "Saldo atual: -  Amortização: R$%.2f" % round(tabela[i][2],2), "  Juros: R$%.2f" % round(tabela[1][3],2), "  Prestação: R$%.2f" % round(tabela[i][4],2))
-        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tjpf,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
-        
-        print("\nFUNDO DE AMORTIZAÇÃO\n")
-        
-        print("Período:  - \tDepósito: - \tJuros: - \tMontante: -")
-        for i in range(1, tabela[0][0]+1):
-            if(i>1):
-                tabelaFA[i][1] = tabelaFA[i-1][2] * dados_financiamento["captacaomedia"]
-                tabelaFA[i][2] = tabelaFA[i-1][2] + tabelaFA[i][1]
-            tjfa += tabelaFA[i][1]
-            tm += tabelaFA[i][2]
-            td += tabelaFA[1][0]
-            exibe_tabFA(i, tabelaFA[1][0], tabelaFA[i][1], tabelaFA[i][2])
-        print("T O T A L I Z A Ç Õ E S --->", f"\t{'Depósito: R$%.2f' : >20}" % round(td,2), f"\t{'Juros: R$%.2f' : >24}" % round(tjfa,2), f"\t{'Montante: R$%.2f' : >20}" % round(tm, 2))
+    totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
+    df = df.append(totais, ignore_index=True)
 
-    # Método S.A.M - Sistema de Amortização Misto
+# Método S.A.Alemão - Sistema de Amortização Alemão
     
-    def SAM():
-        tabela[0][0], tabela[0][1] = dados_financiamento["periodo"], dados_financiamento["saldo"]
-        print("\nPeríodo:  - \tSaldo atual: R$%.2f" % round(tabela[0][1],2), "\tAmortização:\t- \t\tJuros:\t- \t\tPrestação:\t-")
-        coef = (((1+dados_financiamento["taxajuros"])**tabela[0][0])*dados_financiamento["taxajuros"])/(((1+dados_financiamento["taxajuros"])**tabela[0][0])-1)
-        saldoatualSAC, prestacaoSAF, tam, tj, tp = tabela[0][1], tabela[0][1]*coef, 0, 0, 0
-        amortizacaoSAC = (tabela[0][1]/tabela[0][0])
-        for i in range(1, tabela[0][0] + 1):
-            prestacaoSAC = amortizacaoSAC + (saldoatualSAC*dados_financiamento["taxajuros"])
-            tabela[i][3] = tabela[i-1][1]*dados_financiamento["taxajuros"]
-            saldoatualSAC -= amortizacaoSAC
-            tabela[i][4] = (prestacaoSAC + prestacaoSAF)/2
-            tabela[i][2] = tabela[i][4] - tabela[i][3]
-            tabela[i][1] = tabela[i-1][1] - tabela[i][2]
-            tam += tabela[i][2]
-            tj += tabela[i][3]
-            tp += tabela[i][4]
-            if (i!=tabela[0][0]):
-                exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[i][4])
-            else:
-                print("Período: ", i, f"{'Saldo atual: ' : >20}""\t-", f"\t{'Amortização: R$%.2f' : >15}" % round(tabela[i][2],2), f"\t{'Juros: R$%.2f' : >20}" % round(tabela[i][3],2), f"\t{'Prestação: R$%.2f' : >20}" % round(tabela[i][4],2))
-        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
+def SAALM(dados_financiamento):
+    periodo = dados_financiamento["periodo"]
+    saldo = dados_financiamento["saldo"]
+    taxajuros = dados_financiamento["taxajuros"]
 
-    # Método S.A.Alemão - Sistema de Amortização Alemão
+    df = pd.DataFrame(columns=["Período", "Saldo atual", "Amortização", "Juros", "Prestação"])
+
+    amortizacao0 = saldo * taxajuros / (1 - ((1 - taxajuros) ** periodo))
+    amortizacao_list = [amortizacao0 * (1 - taxajuros) ** (periodo - 1)]
+
+    for i in range(1, periodo):
+        amortizacao_list.append(amortizacao_list[i-1] / (1 - taxajuros))
+
+    df["Período"] = range(1, periodo + 1)
+    df["Saldo atual"] = saldo - pd.Series(amortizacao_list).cumsum()
+    df["Amortização"] = pd.Series(amortizacao_list)
+    df["Juros"] = saldo * taxajuros - pd.Series(amortizacao_list)
+    df["Prestação"] = saldo * taxajuros / (1 - ((1 - taxajuros) ** periodo))
     
-    def SAALM():
-        tabela[0][0], tabela[0][1], tam, tj, tp, amortizacaok, i = dados_financiamento["periodo"], dados_financiamento["saldo"], 0, 0, 0, 0, 0
-        tabela[0][3] = dados_financiamento["taxajuros"]*tabela[0][1]
-        tabela[0][4] = tabela[0][3]
-        exibe_tab(i, tabela[0][1], amortizacaok, tabela[0][3], tabela[0][4])
-        tabela[1][4] = (tabela[0][1]*dados_financiamento["taxajuros"])/(1-((1-dados_financiamento["taxajuros"])**tabela[0][0]))
-        amortizacao1 = tabela[1][4] * (1-dados_financiamento["taxajuros"])**(tabela[0][0]-1)
-        tabela[1][2] = amortizacao1
-        tabela[1][3] = tabela[1][4] - tabela[1][2]
-        tabela[1][1] = tabela[0][1] - tabela[1][2]
-        exibe_tab(i+1, tabela[1][1], tabela[1][2], tabela[1][3], tabela[1][4])
-        tp = tabela[0][4] + tabela[1][4]
-        tam = tabela[1][2]
-        tj = tabela[0][3]
-        for i in range(2, tabela[0][0]+1):
-            tabela[i][2] = tabela[i-1][2]/(1-dados_financiamento["taxajuros"])
-            tabela[i][3] = tabela[1][4] - tabela[i][2]
-            tabela[i][1] = tabela[i-1][1] - tabela[i][2]
-            tam += tabela[i][2]
-            tp += tabela[1][4]
-            if (i == tabela[0][0]):
-                tabela[i][3] = 0
-            tj += tabela[i][3]
-            if (i != tabela[0][0]):
-                exibe_tab(i, tabela[i][1], tabela[i][2], tabela[i][3], tabela[1][4])
-            else:
-                print("Período: ", i, f"{'Saldo atual: ' : >20}""\t-", f"\t{'Amortização: R$%.2f' : >15}" % round(tabela[i][2],2), f"\t{'Juros: ' : >20}""\t-", f"\t{'Prestação: R$%.2f' : >20}" % round(tabela[1][4],2))
-        print("T O T A L I Z A Ç Õ E S --->", f"\t\t\t{'Amortização: R$%.2f' : ^20}" % round(tam,2), f"{'Juros: R$%.2f' : ^24}" % round(tj,2), f"{'Prestacao: R$%.2f' : ^10}" % round(tp, 2))
-
-    # Declaração de variáveis
-
-    dados_financiamento = {}
-    simulacao = 0
-    sim_comparacao = []
-   
-    # Função de menu para qual tipo de sistema o usuário selecionará
-
-    def escolha_sistema():
-        dados_financiamento["tiposistema"] = input("\nEscolha qual sistema de amortização deseja usar: \n" +
-        "<A> Sistema de Amortização Constante (S.A.C)\n" +
-        "<B> Sistema de Amortização Francês (S.A.F)\n" +
-        "<C> Sistema de Amortização Americano (S.A.A)\n" +
-        "<D> Sistema de Amortização Misto (S.A.M)\n" +
-        "<E> Sistema de Amortização Alemão (S.A.ALM)\n").upper()
-        sim_comparacao.append(dados_financiamento["tiposistema"])
-        
-    # Função que verifica qual sistema foi escolhido pelo usuário 
+    # Print the totalizations
+    tam = df["Amortização"].sum()
+    tj = df["Juros"].sum()
+    tp = df["Prestação"].sum()
+    totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
+    df = df.append(totais, ignore_index=True)
     
-    def verifica_sistema():
-        x = 0
-        num_simulacoes = 0
-        while x <= simulacoes:
-            x += 1
-            num_simulacoes += 1
-            if ("C" in sim_comparacao):
-                dados_financiamento["captacaomedia"] = float(input("Tendo escolhido o S.A.A, insira o valor da captação média: "))
-                os.system('cls')
-                print("\nSIMULAÇÃO N°", num_simulacoes, " - S.A.A")
-                SAA()
-                sim_comparacao.remove("C")
-            elif ("A" in sim_comparacao):
-                print("\nSIMULAÇÃO N°", num_simulacoes, " - S.A.C")
-                SAC()
-                sim_comparacao.remove("A")
-            elif ("B" in sim_comparacao):
-                print("\nSIMULAÇÃO N°", num_simulacoes, " - S.A.F - Tabela Price")
-                SAF()
-                sim_comparacao.remove("B")
-            elif ("D" in sim_comparacao):
-                print("\nSIMULAÇÃO N°", num_simulacoes, " - S.A.M")
-                SAM()
-                sim_comparacao.remove("D")
-            elif ("E" in sim_comparacao):
-                print("\nSIMULAÇÃO N°", num_simulacoes, " - S.A.ALM")
-                SAALM()
-                sim_comparacao.remove("E")
-                
-    os.system('cls')
-    
-    # Menu principal
-    
-    print("\nOlá, bem vindo ao simulador de sistemas de amortização! Insira os dados de seu financiamento para prosseguir\n")
-
-    dados_financiamento["saldo"] = float(input("Insira o saldo a ser pago: "))
-    dados_financiamento["taxajuros"] = float(input("Insira a taxa de juros: "))
-    dados_financiamento["periodo"] = int(input("Insira o período: "))
-
-    tabela = [[0 for x in range(5)] for y in range(dados_financiamento["periodo"] + 1)]
-    tabelaFA = [[0 for x in range(3)] for y in range(dados_financiamento["periodo"] + 1)]
-
-    opcao = input("\nO que você gostaria de fazer?\n" +
-                "<S> - Para Simular um financiamento com um sistema específico\n" +
-                "<C> - Para Comparar seu financiamento em diferentes sistemas: \n").upper()
-    while opcao=="S" or opcao=="C":
-        if opcao=="S":
-            os.system('cls')
-            print("\nMuito bem, vamos começar a simulação")
-            simulacao += 1
-            simulacoes = 1
-            escolha_sistema()
-            verifica_sistema()
-            break
-        if opcao=="C":
-            simulacoes = int(input("\nMuito bem, quantas simulações serão feitas?\n"))
-            os.system('cls')
-            print("\nMuito bem, vamos começar as simulações")
-            for i in range (0,simulacoes):   
-                escolha_sistema()
-                os.system('cls')
-                os.system('cls')
-                simulacao += 1
-                if simulacao == 1:
-                    print("Simulações escolhidas até agora: ", *sim_comparacao)
-                elif simulacao > 1:
-                    print("Simulações escolhidas até agora: ", ", ".join([str(i) for i in sim_comparacao]))
-            os.system('cls')
-            os.system('cls')
-            verifica_sistema()
-            break
-    
-    # Fim/restart do programa
-    
-    reiniciar = input("\nObrigado por usar o sistema! Deseja sair ou simular outro financiamento?" +
-                    "\n<S> - Sair" +
-                    "\n<N> - Simular novamente\n").upper()
-    while reiniciar=="S" or reiniciar=="N":
-        if reiniciar=="S":
-            exit()
-        elif reiniciar=="N":
-            os.system('cls')
-            os.system('cls')
-            os.system('cls')
-            os.system('cls')
-            break
+    return df
