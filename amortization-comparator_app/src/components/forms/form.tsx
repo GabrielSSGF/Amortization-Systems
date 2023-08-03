@@ -12,7 +12,7 @@ type LoanState = {
 export default function Form() {
 
   const getPeriodTypeLabel = () => {
-    return loanState.period_type === 'monthly' ? 'Number of months:' : 'Number of years';
+    return loanState.period_type === 'monthly' ? 'Number of months' : 'Number of years';
   }
 
   const [loanState, setLoanState] = useState<LoanState>({
@@ -37,53 +37,63 @@ export default function Form() {
       <div className={styles.description}>
 
         <form className={styles.form} onSubmit={handleLoanForm}>
+          <div className={styles.inputContainer}>
+            <label htmlFor="loan_amount">Loan Amount</label>
+            <input
+              className={styles.input}
+              type="number"
+              required
+              value={loanState.loan_amount}
+              onChange={(event) => handleOnChangeForm(event, 'loan_amount')}            
+            />
+          </div>
 
-          <label htmlFor="loan_amount">Loan Amount:</label>
-          <input
-            type="number"
-            required
-            value={loanState.loan_amount}
-            onChange={(event) => handleOnChangeForm(event, 'loan_amount')}
-          />
+          <div className={styles.selectContainer}>
+            <label htmlFor="period_type">Payment type</label>
+            <select
+              id="period_type"
+              value={loanState.period_type}
+              onChange={(event) => handleOnChangeForm(event, 'period_type')}
+            >
+              <option value="monthly">Monthly</option>
+              <option value="annual">Annual</option>
+            </select>
+            </div>
 
-          <label htmlFor="period_type">Payment type:</label>
-          <select
-            id="period_type"
-            value={loanState.period_type}
-            onChange={(event) => handleOnChangeForm(event, 'period_type')}
-          >
-            <option value="monthly">Monthly</option>
-            <option value="annual">Annual</option>
-          </select>
+          <div className={styles.inputContainer}>
+            <label htmlFor="period_quantity">{getPeriodTypeLabel()}</label>
+            <input
+              type="number"
+              required
+              value={loanState.period_quantity}
+              onChange={(event) => handleOnChangeForm(event, 'period_quantity')}
+            />
+          </div>
 
-          <label htmlFor="period_quantity">{getPeriodTypeLabel()}</label>
-          <input
-            type="number"
-            required
-            value={loanState.period_quantity}
-            onChange={(event) => handleOnChangeForm(event, 'period_quantity')}
-          />
+          <div className={styles.inputContainer}>
+            <label htmlFor="interest_rate">Interest rate</label>
+            <input
+              type="number"
+              required
+              value={loanState.interest_rate}
+              onChange={(event) => handleOnChangeForm(event, 'interest_rate')}
+            />
+          </div>
 
-          <label htmlFor="interest_rate">Interest rate:</label>
-          <input
-            type="number"
-            required
-            value={loanState.interest_rate}
-            onChange={(event) => handleOnChangeForm(event, 'interest_rate')}
-          />
-
-          <label htmlFor="amortization_type">Choose the amortization system:</label>
-          <select
-            id="amortization_type"
-            value={loanState.amortization_type}
-            onChange={(event) => handleOnChangeForm(event, 'amortization_type')}
-          >
-            <option value="SAF">French (Price Table)</option>
-            <option value="SAC">Constant (SAC)</option>
-            <option value="SAM">Mixed</option>
-            <option value="SAA">American</option>
-            <option value="SAALM">German</option>
-          </select>
+          <div className={styles.selectContainer}>
+            <label htmlFor="amortization_type">Choose the amortization system</label>
+            <select
+              id="amortization_type"
+              value={loanState.amortization_type}
+              onChange={(event) => handleOnChangeForm(event, 'amortization_type')}
+            >
+              <option value="SAF">French (Price Table)</option>
+              <option value="SAC">Constant (SAC)</option>
+              <option value="SAM">Mixed</option>
+              <option value="SAA">American</option>
+              <option value="SAALM">German</option>
+            </select>
+          </div>
 
           <button type="submit">Calculate</button>
 
