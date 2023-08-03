@@ -51,21 +51,31 @@ def SAC(dados_financiamento):
     
 def SAF(dados_financiamento):
     df = pd.DataFrame(columns=['Período', 'Saldo atual', 'Amortização', 'Juros', 'Prestação'])
-    tam, tj, tp, saldodevedor, df.loc[0, 'Saldo atual'], df.loc[0, 'Período'] = 0, 0, 0, 0, dados_financiamento["saldo"], dados_financiamento["periodo"]
-    coef = (((1+dados_financiamento["taxajuros"])**df.loc[0, 'Período'])*dados_financiamento["taxajuros"])/(((1+dados_financiamento["taxajuros"])**df.loc[0, 'Período'])-1)
+    tam, tj, tp, saldodevedor, df.loc[0, 'Saldo atual'], df.loc[0, 'Período'] = 0, 0, 0, 0, dados_financiamento["saldo"], '-'
+    coef = (((1+dados_financiamento["taxajuros"])**dados_financiamento["periodo"])*dados_financiamento["taxajuros"])/(((1+dados_financiamento["taxajuros"])**dados_financiamento["periodo"])-1)
     df.loc[0, 'Prestação'] = df.loc[0, 'Saldo atual']*coef
     
-    for i in range(1, df.loc[0, 'Período'] + 1):
+    for i in range(1, dados_financiamento["periodo"] + 1):
+        df.loc[i, 'Período'] = i
         df.loc[i, 'Juros'] = df.loc[i-1, 'Saldo atual']*dados_financiamento["taxajuros"]
         df.loc[i, 'Amortização'] = df.loc[0, 'Prestação'] - df.loc[i, 'Juros']
         saldodevedor = df.loc[i-1, 'Saldo atual'] + df.loc[i, 'Juros']
         df.loc[i, 'Saldo atual'] = saldodevedor - df.loc[0, 'Prestação']
-        tam += df.loc[i, 'Amortização']
-        tj += df.loc[i, 'Juros']
-        tp += df.loc[0, 'Prestação']
+        df.loc[i, 'Prestação'] = df.loc[0, 'Prestação']
+    
+    tam = df['Amortização'].sum()
+    tj = df['Juros'].sum()
+    tp = df['Prestação'].sum()
     
     totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
-    df = df.append(totais, ignore_index=True)
+    df_total = pd.DataFrame(totais, index=[df.shape[0]])  # Criar um novo dataframe com os totais
+
+    # Ajustar a coluna "Período" como o índice do dataframe
+    df.set_index('Período', inplace=True)
+    df_total.set_index('Período', inplace=True)  # Definir a coluna "Período" como índice do dataframe de totais
+
+    # Adicionar a linha de totais no final do dataframe
+    df = pd.concat([df, df_total])
     
     return df
 
@@ -153,12 +163,21 @@ def SAM(dados_financiamento):
 
         saldoatualSAC -= amortizacaoSAC
 
-        tam += df.loc[i, 'Amortização']
-        tj += df.loc[i, 'Juros']
-        tp += df.loc[i, 'Prestação']
+    tam = df['Amortização'].sum()
+    tj = df['Juros'].sum()
+    tp = df['Prestação'].sum()
         
     totais = {'Período': 'Total', 'Saldo atual': '', 'Amortização': tam, 'Juros': tj, 'Prestação': tp}
-    df = df.append(totais, ignore_index=True)
+    df_total = pd.DataFrame(totais, index=[df.shape[0]])  # Criar um novo dataframe com os totais
+
+    # Ajustar a coluna "Período" como o índice do dataframe
+    df.set_index('Período', inplace=True)
+    df_total.set_index('Período', inplace=True)  # Definir a coluna "Período" como índice do dataframe de totais
+
+    # Adicionar a linha de totais no final do dataframe
+    df = pd.concat([df, df_total])
+    
+    return df
 
 # Método S.A.Alemão - Sistema de Amortização Alemão
     
@@ -190,10 +209,10 @@ def SAALM(dados_financiamento):
     
     return df
 
-"""dados_financiamento = {}
+dados_financiamento = {}
 dados_financiamento["saldo"] = 10000
 dados_financiamento["periodo"] = 5
 dados_financiamento["taxajuros"] = 0.02
 
-df_sac = SAC(dados_financiamento)
-exportacao_xlsx([df_sac], "path")  # Note que agora estamos passando uma lista com o dataframe como argumento"""
+print(SAM(dados_financiamento))
+# exportacao_xlsx([df_sac], "path")  # Note que agora estamos passando uma lista com o dataframe como argumento"""
