@@ -1,6 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './form.module.css'
 
+import Input from '../input/input';
+import Select from '../select/select';
+
 type LoanState = {
   loan_amount: number;
   period_type: 'monthly' | 'annual';
@@ -23,6 +26,23 @@ export default function Form() {
     amortization_type: 'SAF'
   })
 
+//------------------------------------SELECTS OPTIONS-------------------------------------------------
+
+  const periodOptions = [
+    {value: 'monthly', label:'Monthly'},
+    {value: 'annual', label:'Annual'},
+  ];
+
+  const amortizationOptions = [
+    { value: 'SAF', label: 'French (Price Table)' },
+    { value: 'SAC', label: 'Constant (SAC)' },
+    { value: 'SAM', label: 'Mixed' },
+    { value: 'SAA', label: 'American' },
+    { value: 'SAALM', label: 'German' },
+  ];
+
+
+//------------------------------------HANDLES---------------------------------------------------------
   const handleOnChangeForm = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>, key: keyof LoanState) => {
     setLoanState({ ...loanState, [key]: event.target.value });
   }
@@ -37,62 +57,53 @@ export default function Form() {
       <div className={styles.description}>
 
         <form className={styles.form} onSubmit={handleLoanForm}>
+
           <div className={styles.inputContainer}>
-            <label htmlFor="loan_amount">Loan Amount</label>
-            <input
-              className={styles.input}
+            <Input
+              label="Loan Amount"
+              value={loanState.loan_amount}
+              onChange={(event) => handleOnChangeForm(event, 'loan_amount')}
               type="number"
               required
-              value={loanState.loan_amount}
-              onChange={(event) => handleOnChangeForm(event, 'loan_amount')}            
             />
           </div>
 
           <div className={styles.selectContainer}>
-            <label htmlFor="period_type">Payment type</label>
-            <select
-              id="period_type"
+            <Select
+              label="Payment type"
               value={loanState.period_type}
+              options={periodOptions}
               onChange={(event) => handleOnChangeForm(event, 'period_type')}
-            >
-              <option value="monthly">Monthly</option>
-              <option value="annual">Annual</option>
-            </select>
-            </div>
+            />
+          </div>
 
           <div className={styles.inputContainer}>
-            <label htmlFor="period_quantity">{getPeriodTypeLabel()}</label>
-            <input
-              type="number"
-              required
+            <Input
+              label={getPeriodTypeLabel()}
               value={loanState.period_quantity}
               onChange={(event) => handleOnChangeForm(event, 'period_quantity')}
+              type="number"
+              required
             />
           </div>
 
           <div className={styles.inputContainer}>
-            <label htmlFor="interest_rate">Interest rate</label>
-            <input
-              type="number"
-              required
+            <Input
+              label="Interest rate"
               value={loanState.interest_rate}
               onChange={(event) => handleOnChangeForm(event, 'interest_rate')}
+              type="number"
+              required
             />
           </div>
 
           <div className={styles.selectContainer}>
-            <label htmlFor="amortization_type">Choose the amortization system</label>
-            <select
-              id="amortization_type"
+            <Select
+              label="Choose the amortization system"
               value={loanState.amortization_type}
+              options={amortizationOptions}
               onChange={(event) => handleOnChangeForm(event, 'amortization_type')}
-            >
-              <option value="SAF">French (Price Table)</option>
-              <option value="SAC">Constant (SAC)</option>
-              <option value="SAM">Mixed</option>
-              <option value="SAA">American</option>
-              <option value="SAALM">German</option>
-            </select>
+            />
           </div>
 
           <button type="submit">Calculate</button>

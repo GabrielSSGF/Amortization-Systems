@@ -1,0 +1,10 @@
+.selectContainer {
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+}
+
+.selectContainer select {
+    width: 200px;
+    font-size: 16px;
+}
