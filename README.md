@@ -8,15 +8,6 @@
 
 <h4 align="center">A desktop app to plan your <a href="https://www.investopedia.com/terms/a/amortized_loan.asp#:~:text=An%20amortized%20loan%20is%20a%20type%20of%20loan%20that%20requires,towards%20reducing%20the%20principal%20amount." target="_blank">financing</a>.</h4>
 
-<p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#systems-explanation">Systems Explanation</a> •
-  <a href="#planned-features">Planned Features</a> •
-  <a href="#technologies-used">Technologies used</a> •
-  <a href="#how-to-use">How To Use</a> •
-  <a href="#credits">Authors</a>
-</p>
-
 ## ▶️ Project Status: Ongoing. . .
 
 ## ⚙️ Key Features
