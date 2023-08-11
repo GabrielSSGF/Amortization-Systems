@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import styles from './select.module.css';
+import styles from './Select.module.css';
 
 type Option = {value: string, label: string};
 

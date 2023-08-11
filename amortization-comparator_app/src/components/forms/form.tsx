@@ -1,8 +1,9 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styles from './form.module.css'
 
-import Input from '../input/input';
-import Select from '../select/select';
+import Input from '../input/Input';
+import Select from '../select/Select';
+import CalcButton from './calcButton/CalcButton';
 
 type LoanState = {
   loan_amount: number;
@@ -52,65 +53,60 @@ export default function Form() {
     console.log(loanState);
   }
 
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
+
 
         <form className={styles.form} onSubmit={handleLoanForm}>
+          <div className={styles.formRow}>
+              <Input
+                label="Loan Amount"
+                value={loanState.loan_amount}
+                onChange={(event) => handleOnChangeForm(event, 'loan_amount')}
+                type="number"
+                required
+              />
 
-          <div className={styles.inputContainer}>
-            <Input
-              label="Loan Amount"
-              value={loanState.loan_amount}
-              onChange={(event) => handleOnChangeForm(event, 'loan_amount')}
-              type="number"
-              required
-            />
+              <Select
+                label="Payment type"
+                value={loanState.period_type}
+                options={periodOptions}
+                onChange={(event) => handleOnChangeForm(event, 'period_type')}
+              />
+
+              <Input
+                label={getPeriodTypeLabel()}
+                value={loanState.period_quantity}
+                onChange={(event) => handleOnChangeForm(event, 'period_quantity')}
+                type="number"
+                required
+              />
+
           </div>
 
-          <div className={styles.selectContainer}>
-            <Select
-              label="Payment type"
-              value={loanState.period_type}
-              options={periodOptions}
-              onChange={(event) => handleOnChangeForm(event, 'period_type')}
-            />
-          </div>
+          <div className={styles.formRow}>
+              <Input
+                label="Interest rate"
+                value={loanState.interest_rate}
+                onChange={(event) => handleOnChangeForm(event, 'interest_rate')}
+                type="number"
+                required
+              />
 
-          <div className={styles.inputContainer}>
-            <Input
-              label={getPeriodTypeLabel()}
-              value={loanState.period_quantity}
-              onChange={(event) => handleOnChangeForm(event, 'period_quantity')}
-              type="number"
-              required
-            />
-          </div>
+              <Select
+                label="Choose the amortization system"
+                value={loanState.amortization_type}
+                options={amortizationOptions}
+                onChange={(event) => handleOnChangeForm(event, 'amortization_type')}
+              />
 
-          <div className={styles.inputContainer}>
-            <Input
-              label="Interest rate"
-              value={loanState.interest_rate}
-              onChange={(event) => handleOnChangeForm(event, 'interest_rate')}
-              type="number"
-              required
-            />
+              <CalcButton type="submit">Calculate</CalcButton>
           </div>
-
-          <div className={styles.selectContainer}>
-            <Select
-              label="Choose the amortization system"
-              value={loanState.amortization_type}
-              options={amortizationOptions}
-              onChange={(event) => handleOnChangeForm(event, 'amortization_type')}
-            />
-          </div>
-
-          <button type="submit">Calculate</button>
 
         </form>
 
-      </div>
+
     </main>
   )
 }
