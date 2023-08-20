@@ -100,7 +100,7 @@ For those curious behind the logic used for the implementation of these systems.
 git clone https://github.com/GabrielSSGF/SistemaDeAmortizacao.git
 
 # Go into the repository
-cd SistemaDeAmortizacao/
+cd Amortization-Systems/
 
 # Run the app
 python (or python3) Amortizacao.py
